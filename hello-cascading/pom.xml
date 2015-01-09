@@ -33,7 +33,7 @@
         <configuration>
 			  <transformers>
 			         <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-					<mainClass>net.rav.WordCount</mainClass>
+					<mainClass>com.worl.HelloCascadingTool</mainClass>
 				</transformer>
 			  </transformers>
 			</configuration>

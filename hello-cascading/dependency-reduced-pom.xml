@@ -32,7 +32,7 @@
         <configuration>
           <transformers>
             <transformer>
-              <mainClass>net.rav.WordCount</mainClass>
+              <mainClass>com.worl.HelloCascading</mainClass>
             </transformer>
           </transformers>
         </configuration>

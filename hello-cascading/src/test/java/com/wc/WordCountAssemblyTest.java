@@ -17,20 +17,18 @@ import com.hotels.plunger.Plunger;
 
 public class WordCountAssemblyTest {
 
-  private static final Fields OUTPUT_FIELDS = new Fields("word", String.class).append(new Fields("count", int.class));
+  private static final Fields OUTPUT_FIELDS = WordCountFields.WORD.append(WordCountFields.COUNT);
 
   @Test
   public void singleWord() {
-    Data sourceData = new DataBuilder(new Fields("line", String.class))
-        .addTuple("hello hello hello apple world")
-        .build();
+    Data sourceData = new DataBuilder(WordCountFields.LINE).addTuple("hello hello hello apple world").build();
     Plunger plunger = new Plunger();
     Pipe source = plunger.newNamedPipe("source", sourceData);
     WordCountAssembly wordCountAssembly = new WordCountAssembly(source);
     List<TupleEntry> result = plunger
         .newBucket(OUTPUT_FIELDS, wordCountAssembly)
         .result()
-        .orderBy(new Fields("word", String.class))
+        .orderBy(WordCountFields.WORD)
         .asTupleEntryList();
     assertThat(result.get(0).getInteger("count"), is(1));
     assertThat(result.get(1).getInteger("count"), is(3));

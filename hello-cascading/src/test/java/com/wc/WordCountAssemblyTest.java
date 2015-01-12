@@ -21,11 +21,19 @@ public class WordCountAssemblyTest {
 
   @Test
   public void singleWord() {
-    Data sourceData = new DataBuilder(new Fields("line", String.class)).addTuple("hello hello hello").build();
+    Data sourceData = new DataBuilder(new Fields("line", String.class))
+        .addTuple("hello hello hello apple world")
+        .build();
     Plunger plunger = new Plunger();
     Pipe source = plunger.newNamedPipe("source", sourceData);
     WordCountAssembly wordCountAssembly = new WordCountAssembly(source);
-    List<TupleEntry> result = plunger.newBucket(OUTPUT_FIELDS, wordCountAssembly).result().asTupleEntryList();
-    assertThat(result.get(0).getInteger("count"), is(3));
+    List<TupleEntry> result = plunger
+        .newBucket(OUTPUT_FIELDS, wordCountAssembly)
+        .result()
+        .orderBy(new Fields("word", String.class))
+        .asTupleEntryList();
+    assertThat(result.get(0).getInteger("count"), is(1));
+    assertThat(result.get(1).getInteger("count"), is(3));
+    assertThat(result.get(2).getInteger("count"), is(1));
   }
 }

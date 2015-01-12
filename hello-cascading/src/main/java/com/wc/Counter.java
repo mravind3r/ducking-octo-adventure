@@ -21,7 +21,7 @@ public class Counter extends BaseOperation<Counter.Context> implements Aggregato
 
   @Override
   public void start(FlowProcess flowProcess, AggregatorCall<Context> aggregatorCall) {
-    aggregatorCall.getContext().counter = 0;
+    aggregatorCall.setContext(new Context());
   }
 
   @Override

@@ -28,14 +28,10 @@ public class WordCountTool extends Configured implements Tool {
   public int run(String[] args) {
     MappedArguments arguments = new MappedArguments();
     new JCommander(arguments, args);
-    String path = System.getProperty("user.dir");
-    System.out.println(path);
     Tap inTap = TextLineTap.getInputTap(arguments.getSourceDataPath().toString());
     Tap sinkTap = TextLineTap.getOutputTap(arguments.getOutputPath().toString());
-
     Pipe pipe = new Pipe("word-count");
     pipe = new WordCountAssembly(pipe);
-
     FlowDef flowDef = new FlowDef().addSource(pipe, inTap).addTailSink(pipe, sinkTap);
     Flow<?> flow = new HadoopFlowConnector().connect(flowDef);
     flow.complete();

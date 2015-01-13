@@ -15,7 +15,9 @@ import com.beust.jcommander.JCommander;
 import com.wc.WordCountAssembly;
 
 /**
- * Hello world!
+ * while running this with eclipse use the following run configurations ->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+ * -outputFolder /Users/a-rmandal/repositories/ducking-octo-adventure/hello-cascading/src/main/data/output -sourceFolder
+ * /Users/a-rmandal/repositories/ducking-octo-adventure/hello-cascading/src/main/data/input/Input.txt -numOfReducers 3
  */
 public class WordCountTool extends Configured implements Tool {
 
@@ -28,14 +30,13 @@ public class WordCountTool extends Configured implements Tool {
   public int run(String[] args) {
     MappedArguments arguments = new MappedArguments();
     new JCommander(arguments, args);
-    Tap inTap = TextLineTap.getInputTap(arguments.getSourceDataPath().toString());
-    Tap sinkTap = TextLineTap.getOutputTap(arguments.getOutputPath().toString());
+    Tap<?, ?, ?> inTap = TextLineTap.getInputTap(arguments.getSourceDataPath().toString());
+    Tap<?, ?, ?> sinkTap = TextLineTap.getOutputTap(arguments.getOutputPath().toString());
     Pipe pipe = new Pipe("word-count");
     pipe = new WordCountAssembly(pipe);
     FlowDef flowDef = new FlowDef().addSource(pipe, inTap).addTailSink(pipe, sinkTap);
     Flow<?> flow = new HadoopFlowConnector().connect(flowDef);
     flow.complete();
-
     return 0;
   }
 
